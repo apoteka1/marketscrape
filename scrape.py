@@ -32,7 +32,7 @@ driver.find_element(By.NAME, 'login').click()
 driver.implicitly_wait(5)
 
 driver.get(
-    'https://www.facebook.com/marketplace/category/search/?query=minilogue%20xd')
+    f'https://www.facebook.com/marketplace/category/search/?query={search_term}')
 
 driver.implicitly_wait(5)
 
@@ -47,12 +47,16 @@ titles = soup.find_all('span', text=re.compile(search_term, re.IGNORECASE))
 results = []
 
 for t in titles:
-    i = {}
     parent = t.find_parent("a")
-    i['date'] = today
-    i['price'] = int(parent.find(string=re.compile('^£\d+'))[1:])
-    i['link'] = 'https://www.facebook.com'+parent['href']
-    results.append(i)
+    try:
+        price = parent.find(string=re.compile('^£\d+$'))[1:]
+        i = {}
+        i['date'] = today
+        i['price'] = int(price)
+        i['link'] = 'https://www.facebook.com'+parent['href']
+        results.append(i)
+    except TypeError as e:
+        print(e)
 
 filename = f'{search_term}_data.csv'
 is_new = not exists(filename)
@@ -60,7 +64,6 @@ with open(filename, 'a', newline='') as f:
     w = csv.DictWriter(f, ['date', 'price', 'link'])
     if is_new:
         w.writeheader()
-
     for r in results:
         w.writerow(r)
 
