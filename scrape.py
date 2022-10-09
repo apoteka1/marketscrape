@@ -54,16 +54,14 @@ for t in titles:
     i['link'] = 'https://www.facebook.com'+parent['href']
     results.append(i)
 
-
-
 filename = f'{search_term}_data.csv'
 is_new = not exists(filename)
 with open(filename, 'a', newline='') as f:
     w = csv.DictWriter(f, ['date', 'price', 'link'])
     if is_new:
         w.writeheader()
-        
+
     for r in results:
         w.writerow(r)
 
-# driver.quit()
+driver.quit()

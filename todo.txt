@@ -1,0 +1,4 @@
+make async, 
+wrap in one function 
+make list of search terms possible
+aggregate agg data
