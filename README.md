@@ -9,6 +9,7 @@ fb marketplace scraper
     email = 'your@email.com'
     
     password = 'yourpassword'
+    
     search_term = 'searchterm'
 
 the search term can be changed, and will create new files (not override previous data)
