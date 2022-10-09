@@ -1,13 +1,15 @@
-from cgitb import text
-from profile import password, email
+from profile import password, email, search_term
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup, SoupStrainer
+from os.path import exists
 import re
 import csv
+from datetime import datetime
 
-search_term = 'minilogue XD'
+
+today = datetime.now().strftime("%d:%m:%Y")
 
 option = Options()
 option.add_argument('--disable-notifications')
@@ -47,10 +49,21 @@ results = []
 for t in titles:
     i = {}
     parent = t.find_parent("a")
-    i['link'] = 'https://www.facebook.com'+parent['href']
+    i['date'] = today
     i['price'] = int(parent.find(string=re.compile('^£\d+'))[1:])
-
+    i['link'] = 'https://www.facebook.com'+parent['href']
     results.append(i)
 
+
+
+filename = f'{search_term}_data.csv'
+is_new = not exists(filename)
+with open(filename, 'a', newline='') as f:
+    w = csv.DictWriter(f, ['date', 'price', 'link'])
+    if is_new:
+        w.writeheader()
+        
+    for r in results:
+        w.writerow(r)
 
 # driver.quit()
