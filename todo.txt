@@ -1,4 +1,4 @@
 make async, 
 wrap in one function 
-make list of search terms possible
-aggregate agg data
+add changeable upper / lower limits
+remove dups in analysis
