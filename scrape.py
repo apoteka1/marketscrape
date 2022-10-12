@@ -14,6 +14,7 @@ from datetime import datetime
 # block popups, use chrome
 option = Options()
 option.add_argument('--disable-notifications')
+option.headless = True
 driver = webdriver.Chrome(options=option)
 
 driver.get("https://www.facebook.com/")
